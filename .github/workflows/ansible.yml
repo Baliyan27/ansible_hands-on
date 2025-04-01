@@ -23,4 +23,5 @@ jobs:
           ansible-playbook -i ansible/hosts.ini ansible/playbooks/install_nginx.yml \
             --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") \
             --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-  shell: /usr/bin/bash -e {0}
+
+
