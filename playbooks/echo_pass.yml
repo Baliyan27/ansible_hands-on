@@ -1,0 +1,11 @@
+---
+- name: Echo the Password of Secret file
+  hosts: localhost
+  gather_facts: no
+  vars_files: 
+    - ~/ansible/secrets.yml
+
+  tasks:
+    - name: Print the password
+      debug:
+        msg: "The database password is: {{ ansible_become_password }}"

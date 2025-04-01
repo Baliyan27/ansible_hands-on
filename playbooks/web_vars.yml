@@ -1,0 +1,6 @@
+package_name: nginx
+service_name: nginx
+web_root: /var/www/html
+port_f: 80
+website_title: "My Dynamic Website"
+welcome_message: "welcome to {{ ansible_hostname }} powered by nginx"

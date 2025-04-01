@@ -1,0 +1,31 @@
+---
+- name: Revert_nginx
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Stop nginx
+      service:
+        name: nginx
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
+    - name: Remove Nginx
+      apt:
+        name: nginx
+        state: absent
+        purge: yes
+        autoremove: yes
+
+    - name: Remove index.html
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Remove firewall rule
+      ufw:
+        rule: deny
+        port: 80
+        proto: tcp
+      ignore_errors: yes

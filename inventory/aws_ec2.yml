@@ -1,0 +1,10 @@
+---
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-south-1  # Change to your AWS region
+keyed_groups:
+  - key: tags.Name
+    prefix: tag
+compose:
+  ansible_host: public-ip-address
+

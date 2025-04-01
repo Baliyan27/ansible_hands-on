@@ -1,0 +1,30 @@
+---
+- name: Install and configure Nginx
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: 
+          - nginx
+          - ufw
+        state: present
+
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Deploy custom index.html
+      copy:
+        content: "<h1>Welcome to Nginx Server</h1>"
+        dest: /usr/share/nginx/html/index.html
+        mode: '0644'
+
+    - name: Open firewall for HTTP
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+

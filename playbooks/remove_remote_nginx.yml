@@ -1,0 +1,9 @@
+---
+- name: Terminate EC2 Instance
+  hosts: localhost
+  tasks:
+    - name: Terminate the EC2 instance
+      amazon.aws.ec2_instance:
+        state: absent
+        instance_ids: i-00dab1558d791d1ce
+

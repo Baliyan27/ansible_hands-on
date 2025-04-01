@@ -1,0 +1,37 @@
+---
+- name: Revert first_P
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Stop Apache Service (if installed)
+      service:
+        name: apache2
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
+    - name: Remove Apache and UFW packages
+      apt:
+        name:
+          - apache2
+          - ufw
+        state: absent
+        purge: yes
+        autoremove: yes
+
+    - name: Remove index.html (if exists)
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Check if UFW is installed
+      command: which ufw
+      register: ufw_check
+      ignore_errors: yes
+
+    - name: Disable and reset UFW (if installed)
+      command: ufw --force reset
+      when: ufw_check.rc == 0
+      ignore_errors: yes
+

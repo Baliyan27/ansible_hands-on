@@ -1,0 +1,33 @@
+---
+- name: Deploy App with Docker Compose
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.24.2/docker-compose-linux-x86_64"
+        dest: "/usr/local/bin/docker-compose"
+        mode: 'u+x,g+x'
+
+    - name: Create Docker Compose directory
+      file:
+        path: /opt/docker-app
+        state: directory
+        mode: '0755'
+
+    - name: Copy Docker Compose file
+      copy:
+        dest: /opt/docker-app/docker-compose.yml
+        content: |
+          version: '3'
+          services:
+            web:
+              image: nginx
+              ports:
+                - "80:80"
+
+    - name: Start the application
+      shell: "docker-compose up -d"
+      args:
+        chdir: /opt/docker-app
+
