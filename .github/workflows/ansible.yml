@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main  # Runs when changes are pushed to main
-  workflow_dispatch:  # Allows manual triggering from GitHub Actions
 
 jobs:
   deploy:
@@ -12,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # This ensures the repo files are available
 
       - name: Install Ansible
         run: |
@@ -22,9 +21,6 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           ansible-playbook -i ansible/hosts.ini ansible/playbooks/install_nginx.yml \
-          --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") \
-          --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-        
-
-          
-         
+            --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") \
+            --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+  shell: /usr/bin/bash -e {0}
