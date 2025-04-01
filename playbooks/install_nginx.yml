@@ -1,7 +1,6 @@
 ---
 - name: Install and Start NGINX on EC2 Instances
-  hosts: tag_Ansible_EC2  # This matches the AWS tag in your inventory
-  become: yes  # Run tasks as root
+  hosts: all # This matches the AWS tag in your inventory
+  become: yes # Run tasks as root
   roles:
     - nginx
-
