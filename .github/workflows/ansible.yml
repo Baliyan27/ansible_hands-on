@@ -17,11 +17,12 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
+          
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i ansible_hands-on/hosts.ini ansible_hands-on/playbooks/install_nginx.yml \
-            --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") \
-            --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+          ls -ltr
+          pwd
+          ansible-playbook -i ansible_hands-on/hosts.ini ansible_hands-on/playbooks/install_nginx.yml --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
 
 
