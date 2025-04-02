@@ -20,9 +20,14 @@ jobs:
           
 
       - name: Run Ansible Playbook
+        env:
+          PRIVATE_KEY : ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          ls -ltr
-          pwd
-          ansible-playbook -i hosts.ini playbooks/install_nginx.yml --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+          mkdir -p ~/.ssh
+          touch ~/.ssh/private.key
+          chmod 600 ~/.ssh/private.key
+          echo -e "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/private.key
+          ansible -i hosts.ini -m ping all
+          ansible-playbook -i hosts.ini playbooks/install_nginx.yml --private-key ~/.ssh/private.key
 
 
