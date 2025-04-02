@@ -1,4 +1,4 @@
-retsname: Deploy Web App with Ansible
+name: Deploy Web App with Ansible
 
 on:
   push:
