@@ -1,4 +1,4 @@
-name: Deploy Web App with Ansible
+retsname: Deploy Web App with Ansible
 
 on:
   push:
@@ -17,14 +17,19 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
-          
-      - name: Run Ansible Playbook
+      - name: Setup SSH
         env:
-          PRIVATE_KEY: ${{ vars.SSH_KEY }}  # Correct reference to GitHub variable
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} 
+          run: |
+            eval `ssh-agent -s`
+            mkdir -p /home/runner/.ssh/
+            touch /home/runner/.ssh/id_rsa
+            echo -e "{{secrets.SSH_PRIVATE_KEY }}" > /home/runner/.ssh/id_rsa
+            chmod 700 /home/runner/.ssh/id_rsa
+      - name: Run Ansible Playbook
         run: |
-          mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/private.key
-          chmod 600 ~/.ssh/private.key
           ansible -i hosts.ini -m ping all
-          ansible-playbook -i hosts.ini playbooks/install_nginx.yml --private-key ~/.ssh/private.key
-          
+
+      - name: Run Ansible Playbook
+        run: 
+          ansible-playbook -i hosts.ini playbooks/install_nginx.yml
