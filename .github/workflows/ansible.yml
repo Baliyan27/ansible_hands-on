@@ -23,6 +23,6 @@ jobs:
         run: |
           ls -ltr
           pwd
-          ansible-playbook -i ansible_hands-on/hosts.ini ansible_hands-on/playbooks/install_nginx.yml --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+          ansible-playbook -i hosts.ini playbooks/install_nginx.yml --private-key <(echo "${{ secrets.SSH_PRIVATE_KEY }}") --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
 
 
